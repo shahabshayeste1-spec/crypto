@@ -37,8 +37,8 @@ test('failed/invalid agents fail closed, redact errors and do not retry consumed
 });
 test('stale or failed data does not call agents; data becoming stale during calls blocks buys', async () => {
   const s = newStore(), a = fixtureAgents(), m = fixtureMarket(NOW - 900000), c = create(s, m, a);
-  await c.tick(); assert.equal(a.calls, 0); assert.equal(c.status().market.fresh, false);
-  m.candles = async () => { throw Error('secret-value'); }; await c.tick(); assert.equal(c.status().market.status, 'fetch failed');
+  await c.tick(); assert.equal(a.calls, 0); assert.equal(c.status().markets['BTC-USD'].fresh, false);
+  m.candles = async () => { throw Error('secret-value'); }; await c.tick(); assert.equal(c.status().markets['BTC-USD'].status, 'fetch failed');
   const freshMarket = fixtureMarket(); let clock = NOW;
   const late = fixtureAgents(); const originalAsk = late.ask; late.ask = async (...args) => { const r = await originalAsk(...args); clock += 300000; return r; };
   freshMarket.quote = async () => ({ price: 100, timestamp: clock });
@@ -63,7 +63,7 @@ test('wallet, history, duplicate prevention and interrupted candle survive resta
 });
 test('manual exit remains available when stopped, with no agent calls', async () => {
   const s = newStore(), a = fixtureAgents(), c = create(s, fixtureMarket(), a); await c.tick(); c.setMode('stopped'); s.set('agents', { healthy: false });
-  const r = await c.exitAll(); assert.equal(r.status, 'EXECUTED'); assert.equal(s.get('wallet').btc, 0); assert.equal(a.calls, 2); s.close();
+  const r = await c.exitAll(); assert.equal(r.status, 'EXECUTED'); assert.equal(s.get('wallet').positions['BTC-USD'].qty, 0); assert.equal(a.calls, 2); s.close();
 });
 test('invalid schemas, envelope recipients and HOLD amounts are rejected', () => {
   assert.throws(() => validateResponse({ ...analyst, decision: 'HOLD', amountUsd: 1 }, 'Analyst'));
@@ -76,7 +76,8 @@ test('quote failure after approval does not fill; manual exit failure preserves 
   const c = create(s,m); await c.tick();
   assert.equal(s.recent('trades').length,0); assert.equal(s.recent('decisions')[0].status,'FAILED');
   assert.ok(s.recent('messages').some(m=>m.decision==='APPROVED'));
-  const before=s.get('wallet'); await assert.rejects(c.exitAll(),/quote failed/); assert.deepEqual(s.get('wallet'),before); s.close();
+  const before=s.get('wallet'); before.positions['BTC-USD']={qty:1,costBasis:100};before.cash=9900;s.set('wallet',before);
+  const result=await c.exitAll();assert.equal(result.status,'PARTIAL');assert.equal(result.results[0].status,'FAILED');assert.deepEqual(s.get('wallet'),before);s.close();
 });
 test('concurrent scheduler calls cannot create overlapping cycles', async () => {
   const s=newStore(), a=fixtureAgents(); const original=a.ask; let unblock;

@@ -6,5 +6,12 @@
   "slippageBps": 5,
   "agentTimeoutSeconds": 90,
   "model": null,
-  "port": 8787
+  "port": 8787,
+  "symbols": [
+    "BTC-USD",
+    "ETH-USD",
+    "SOL-USD",
+    "ZEC-USD",
+    "PUMP-USD"
+  ]
 }

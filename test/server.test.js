@@ -22,7 +22,7 @@ test('real HTTP dashboard, protected controls, static assets and persistent wall
   const base=`http://127.0.0.1:${port}`;
   try {
     await ready;
-    assert.match(await (await fetch(base)).text(), /PAPER TRADING ONLY/);
+    assert.match(await (await fetch(base)).text(), /PAPER ONLY/);
     for (const asset of ['/app.js','/style.css']) assert.equal((await fetch(base+asset)).status,200);
     let state=await (await fetch(base+'/api/state')).json(); assert.equal(state.wallet.cash,10000);assert.equal(state.mode,'stopped');
     assert.equal((await fetch(base+'/api/start',{method:'POST'})).status,403);

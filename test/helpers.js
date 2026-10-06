@@ -1,5 +1,5 @@
 import { Store } from '../src/store.js';
-export const config = { intervalSeconds: 300, pollSeconds: 30, staleAfterSeconds: 420, feeBps: 10, slippageBps: 5, agentTimeoutSeconds: 10, model: null, port: 8787 };
+export const config = { symbols: ['BTC-USD'], intervalSeconds: 300, pollSeconds: 30, staleAfterSeconds: 420, feeBps: 10, slippageBps: 5, agentTimeoutSeconds: 10, model: null, port: 8787 };
 export const NOW = Date.parse('2026-10-06T12:05:05Z');
 export function candles(now = NOW) {
   const latestOpen = Math.floor(now / 300000) * 300000 - 300000;

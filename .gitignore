@@ -3,3 +3,4 @@ data/
 .npm-cache/
 .env
 .DS_Store
+backups/

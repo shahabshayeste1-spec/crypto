@@ -1,51 +1,64 @@
-# BTC Paper Team
+# Paper Team · Five-coin trading room
 
-A small local app: a real **Codex SDK Analyst** proposes a trade, a separate **Critic** challenges it, and deterministic code controls a persistent virtual wallet. It cannot place real orders.
+A local **paper-only** app: real Codex SDK Analyst and Critic calls discuss trades, a Controller coordinates them, and fixed code enforces one shared virtual account. Default coins: **BTC, ETH, SOL, Zcash (ZEC), and Pump.fun (PUMP)**. It cannot place real orders.
 
 ## Run on a Mac
 
-1. Install **Node.js 24 LTS** using the Mac installer at [nodejs.org](https://nodejs.org).
-2. Open Terminal in this project folder and run:
+Install **Node.js 24 LTS** from [nodejs.org](https://nodejs.org), open Terminal in this folder, and run:
 
-   ```sh
-   ./launch.command
-   ```
+```sh
+bash launch.command
+```
 
-   You can also double-click `launch.command` in Finder. It installs locked dependencies, asks you to sign into Codex if necessary, starts the server, and opens your browser on a Mac. Codex account/model access is required; actual model calls may incur usage charges. Alternatively, supply your own `OPENAI_API_KEY` in your Terminal environment, never in a source file.
-3. Press **Start / resume** in the dashboard. It runs autonomously while Terminal stays open. Press Ctrl+C in Terminal to quit the server.
+It installs locked dependencies, guides Codex sign-in if needed, starts the server, and opens the browser on your Mac. Press **Start / resume**. Keep Terminal open and your Mac awake. Ctrl+C quits the server; your wallet stays saved. A restart starts stopped. Codex account/model access is required. Five coins can use 10 model calls per candle, plus up to one revision per coin; actual model usage may incur charges. An `OPENAI_API_KEY` may instead be supplied in your Terminal environment, never in source files.
 
-**Start** evaluates the latest completed candle, then each newly completed candle once. **Pause entries** keeps monitoring and permits agent-approved sells; it blocks buys. **Stop** cancels the current cycle and stops monitoring. **Exit all BTC** sells the virtual position without needing agents, even while paused/stopped; it still requires a fresh public quote. Wait for an in-flight cycle to finish or cancel it first.
+## Update an existing installation without losing the wallet
 
-Wallet and history persist in `data/paper.sqlite`. A restart starts stopped; press Start again. Interrupted candles are recorded and never replayed. Missed candles are skipped rather than backfilled. Only one server can use a wallet. Keep Terminal running (and prevent Mac sleep) for continuous operation.
+1. Press **Ctrl+C** in the original app's Terminal.
+2. Download and unzip the new GitHub ZIP **as a separate folder**; retain your original folder.
+3. Run `bash update.command` from the NEW folder. On a Mac, it asks you to select your ORIGINAL Paper Team folder, backs up its files and wallet, installs the update there, preserves other settings, enables the five requested coins, and launches it.
+4. Refresh your dashboard with **Command+Shift+R**, then press Start.
 
-## Settings
+You may also pass the original path: `bash update.command "/path/to/original/folder"`. The updater refuses to modify a running wallet. Backups remain in the original folder's `backups/`. The database also makes `data/paper.sqlite.pre-multi-coin.bak` before migrating the old BTC schema. Never delete `data/` to fix startup.
 
-Edit `config.json`, then restart:
+## The animated dashboard
+
+The robot room highlights real scanning, analysis, critique, risk checks and paper execution. Moving packets represent newly recorded message handoffs. Click an agent to filter its messages. Animations stop when no work is occurring and respect reduced-motion settings.
+
+Click BTC, ETH, SOL, ZEC or PUMP to view its completed candlestick chart; hover for OHLC and volume. **Follow team** automatically selects the coin currently being analyzed. Quotes, data availability, indicators, positions, fees and P/L appear alongside the charts. An unavailable feed is reported, with no synthetic replacement. The [preview screenshot](docs/dashboard-preview.png) is explicitly labeled **OFFLINE FIXTURE PREVIEW**, not live AI or market data.
+
+**Pause entries** blocks buys while monitoring and agent-approved sells continue. **Stop** cancels the cycle and stops monitoring. **Exit all positions** attempts a fresh-quote sale for each held coin without needing agents, even while paused/stopped. Failed exits are reported individually; other coins can still exit. Cancel an in-flight cycle or wait for it first.
+
+## Settings and limits
+
+Edit `config.json` and restart:
 
 | Setting | Default | Meaning |
 | --- | --- | --- |
-| `intervalSeconds` | `300` | Coinbase candles: 60, 300, 900, 3600, 21600, or 86400 seconds |
-| `pollSeconds` | `30` | Check for a newly completed candle |
-| `staleAfterSeconds` | `420` | Maximum age since latest candle completed; must be at least the interval |
+| `symbols` | BTC/ETH/SOL/ZEC/PUMP USD pairs | Enabled analyses; select a subset of these exact symbols if desired |
+| `intervalSeconds` | `300` | 60, 300, 900, 3600 or 86400; 21600 also works without PUMP |
+| `pollSeconds` | `30` | Check for completed candles |
+| `staleAfterSeconds` | `420` | Maximum age since candle completion; at least the interval |
 | `feeBps` / `slippageBps` | `10` / `5` | 0.10% fee and 0.05% adverse fill movement |
 | `agentTimeoutSeconds` | `90` | Timeout per model call |
-| `model` | `null` | Use Codex's default model, or your accessible Codex model ID |
+| `model` | `null` | Codex default, or your accessible model ID |
 | `port` | `8787` | Local dashboard port |
 
-Fixed limits live in risk code, beyond AI control: BTC-USD only, $10,000 starting cash, $500 total cash per buy **including fees**, 20% maximum BTC exposure after costs, no leverage or shorts. At a 2% loss from the day's starting equity, buys pause for the rest of that UTC day, even after a rebound. The daily baseline is the first fresh quote observed that day; exits stay available.
+Fixed limits: **$10,000** initial virtual cash, **$500 per buy including fees**, **20% total crypto exposure across all coins**, no leverage or shorts. A 2% loss from daily starting equity pauses all buys until the next UTC day, even after a rebound. The baseline is the first fully valued observation that day. Fresh quotes for every held asset are required before buying. Existing holdings remain visible and valued even if you disable that coin's analyses.
 
-A cycle allows one proposal, one critique and at most one revision. An ACCEPT still needs risk approval. Requested revisions are saved but cannot trade until a later candle gets independent acceptance. Data errors or agent failures never generate fallback AI responses or fills. A successful later cycle restores agent health. Execution uses a newly fetched bid/ask after approval, with fees and slippage; never a previous candle close. Unrealized P/L and exposure use the last observed quote, whose timestamp appears on the dashboard.
+Each coin/candle has a unique durable claim and proposal ID: one proposal, one independent critique, at most one revision. Revisions are saved but deferred until a later candle can receive independent acceptance. Failed agents or any watched stale/unavailable data block new entries; exits remain possible. Execution uses a quote obtained after approval with simulated costs, never a past candle close. Quotes older than 30 seconds cannot fill. P/L uses each asset's last observed quote, with its timestamp shown. Missed or interrupted candles are never backfilled or replayed.
 
-## Check it
+## Tests and connections
 
 ```sh
-npm test           # risk, failure, persistence, accounting and HTTP integration tests
-npm run check:ai   # real SDK connectivity check; requires usable Codex authentication/runtime
-npm run demo       # OFFLINE fixtures: one approved $500 buy and one rejected $501 buy
+npm test           # risk, five coins, migration, controller, dashboard, HTTP and updater
+npm run check:ai   # real Codex SDK check; no mock fallback
+npm run demo       # labeled OFFLINE fixtures: approved $500 buy, rejected $501 buy
+npm run test:browser # optional real Chromium UI test, using labeled offline trading fixtures
 ```
 
-The demo uses synthetic market data, deterministic agent fixtures and an isolated in-memory wallet. **It is not actual AI output.** Its saved example is [docs/offline-demo.json](docs/offline-demo.json). The full real application history is available from the dashboard's JSON link and SQLite; no credentials or raw SDK errors are logged.
+The optional browser test uses system Chromium at `/usr/bin/chromium`; set `PAPER_BROWSER_PATH` to your Chrome executable on another platform. It saves an explicitly offline preview screenshot. Normal app startup does not require Chromium or this test.
 
-Public data requires access to `api.exchange.coinbase.com`; no exchange API key is needed. To sign in again after installation: `./node_modules/.bin/codex login`. A read-only Codex runtime must be made writable by the host; logging in again does not fix that. Tests and offline fixtures run independently of these prerequisites.
+BTC/ETH/SOL/ZEC data uses **api.exchange.coinbase.com**; PUMP uses Kraken's **api.kraken.com** PUMP/USD public OHLC and bid/ask feed. Market availability varies by provider; unavailable markets pause entries rather than invent prices. No exchange credentials are needed. Wallet, messages, decisions and per-coin claims persist in `data/paper.sqlite`; full history is linked from the dashboard. Authentication values and raw SDK errors are not logged.
 
-SDK integration follows [OpenAI's official current SDK README](https://github.com/openai/codex/tree/main/sdk/typescript): independent threads, `outputSchema`, cancellation signals, read-only sandbox and no web search. See [validation notes](docs/validation.md) for what was verified in the build environment.
+To sign in after installation: `./node_modules/.bin/codex login`. SDK integration follows [OpenAI's official SDK README](https://github.com/openai/codex/tree/main/sdk/typescript). See [validation notes](docs/validation.md) for tested behavior and cloud-only limitations.

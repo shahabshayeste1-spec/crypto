@@ -1,6 +1,6 @@
 {
   "name": "crypto-paper-team",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,10 +10,14 @@
     "start": "node src/server.js",
     "test": "node --test test/*.test.js",
     "demo": "node scripts/demo.js",
-    "check:ai": "node scripts/check-ai.js"
+    "check:ai": "node scripts/check-ai.js",
+    "test:browser": "node scripts/browser-smoke.js"
   },
   "dependencies": {
     "@openai/codex-sdk": "0.160.1",
     "ajv": "^8.17.1"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.63.0"
   }
 }

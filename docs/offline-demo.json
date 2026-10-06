@@ -2,11 +2,12 @@
   "label": "OFFLINE DEMONSTRATION — deterministic fixtures, NOT actual AI responses or live market data. Separate in-memory wallet.",
   "decisions": [
     {
-      "id": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "id": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
+      "symbol": "BTC-USD",
       "candle": 1791288000000,
       "timestamp": "2026-10-06T12:05:05.000Z",
       "status": "EXECUTED",
-      "reason": "Paper fill passed fixed risk checks",
+      "reason": "Paper fill passed fixed portfolio risk checks",
       "proposal": {
         "decision": "BUY",
         "amountUsd": 500,
@@ -17,7 +18,8 @@
       }
     },
     {
-      "id": "373e603e-5382-4ff3-a0e3-7599b5c34186",
+      "id": "2a124a51-4d55-4c0e-86e1-99f71f3ab374",
+      "symbol": "BTC-USD",
       "candle": 1791288300000,
       "timestamp": "2026-10-06T12:10:05.000Z",
       "status": "REJECTED",
@@ -34,7 +36,7 @@
   ],
   "trades": [
     {
-      "id": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "id": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
       "symbol": "BTC-USD",
       "side": "BUY",
       "qty": 4.992508740634678,
@@ -51,8 +53,16 @@
   ],
   "wallet": {
     "cash": 9500,
-    "btc": 4.992508740634678,
-    "costBasis": 500,
+    "positions": {
+      "BTC-USD": {
+        "qty": 4.992508740634678,
+        "costBasis": 500,
+        "price": 100,
+        "marketValue": 499.2508740634678,
+        "unrealizedPnl": -0.7491259365322094,
+        "markTimestamp": null
+      }
+    },
     "fees": 0.4995004995004706,
     "realizedPnl": 0,
     "dailyDate": "2026-10-06",
@@ -60,28 +70,31 @@
     "drawdownPaused": false,
     "marketValue": 499.2508740634678,
     "equity": 9999.250874063468,
+    "costBasis": 500,
     "pnl": -0.7491259365324368,
     "unrealizedPnl": -0.7491259365322094,
     "exposure": 0.049928827704328174
   },
   "messages": [
     {
-      "id": "4127e37f-8806-47b0-8944-57aea564071e",
-      "proposalId": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "symbol": "BTC-USD",
+      "id": "bc4498ba-1ca5-4c11-92f7-f756a188660a",
+      "proposalId": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
       "sender": "Controller",
       "recipient": "Analyst",
       "timestamp": "2026-10-06T12:05:05.000Z",
       "decision": "HOLD",
       "evidence": [
-        "{\"symbol\":\"BTC-USD\",\"candleCompletedAt\":\"2026-10-06T12:05:00.000Z\",\"candles\":[{\"time\":1791279300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100,\"volume\":10},{\"time\":1791279600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.03333333333333,\"volume\":10},{\"time\":1791279900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.06666666666666,\"volume\":10},{\"time\":1791280200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.1,\"volume\":10},{\"time\":1791280500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.13333333333334,\"volume\":10},{\"time\":1791280800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.16666666666667,\"volume\":10},{\"time\":1791281100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.2,\"volume\":10},{\"time\":1791281400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.23333333333333,\"volume\":10},{\"time\":1791281700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.26666666666667,\"volume\":10},{\"time\":1791282000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.3,\"volume\":10},{\"time\":1791282300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.33333333333333,\"volume\":10},{\"time\":1791282600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.36666666666666,\"volume\":10},{\"time\":1791282900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.4,\"volume\":10},{\"time\":1791283200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.43333333333334,\"volume\":10},{\"time\":1791283500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.46666666666667,\"volume\":10},{\"time\":1791283800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.5,\"volume\":10},{\"time\":1791284100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.53333333333333,\"volume\":10},{\"time\":1791284400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.56666666666666,\"volume\":10},{\"time\":1791284700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.6,\"volume\":10},{\"time\":1791285000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.63333333333334,\"volume\":10},{\"time\":1791285300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.66666666666667,\"volume\":10},{\"time\":1791285600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.7,\"volume\":10},{\"time\":1791285900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.73333333333333,\"volume\":10},{\"time\":1791286200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.76666666666667,\"volume\":10},{\"time\":1791286500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.8,\"volume\":10},{\"time\":1791286800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.83333333333333,\"volume\":10},{\"time\":1791287100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.86666666666666,\"volume\":10},{\"time\":1791287400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.9,\"volume\":10},{\"time\":1791287700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.93333333333334,\"volume\":10},{\"time\":1791288000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.96666666666667,\"volume\":10}],\"indicators\":{\"sma5\":100.9,\"sma20\":100.65,\"rsi14\":100,\"lastReturn\":0.00033025099075301156},\"currentQuote\":{\"price\":100,\"timestamp\":1791288305000},\"wallet\":{\"cash\":10000,\"btc\":0,\"costBasis\":0,\"fees\":0,\"realizedPnl\":0,\"dailyDate\":\"2026-10-06\",\"dailyStart\":10000,\"drawdownPaused\":false,\"marketValue\":0,\"equity\":10000,\"pnl\":0,\"unrealizedPnl\":0,\"exposure\":0},\"recentTrades\":[],\"recentDecisions\":[],\"limits\":{\"symbol\":\"BTC-USD\",\"initialCash\":10000,\"maxBuy\":500,\"maxExposure\":0.2,\"dailyDrawdown\":0.02},\"costs\":{\"feeBps\":10,\"slippageBps\":5},\"mode\":\"running\"}"
+        "{\"symbol\":\"BTC-USD\",\"candleCompletedAt\":\"2026-10-06T12:05:00.000Z\",\"candles\":[{\"time\":1791279300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100,\"volume\":10},{\"time\":1791279600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.03333333333333,\"volume\":10},{\"time\":1791279900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.06666666666666,\"volume\":10},{\"time\":1791280200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.1,\"volume\":10},{\"time\":1791280500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.13333333333334,\"volume\":10},{\"time\":1791280800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.16666666666667,\"volume\":10},{\"time\":1791281100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.2,\"volume\":10},{\"time\":1791281400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.23333333333333,\"volume\":10},{\"time\":1791281700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.26666666666667,\"volume\":10},{\"time\":1791282000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.3,\"volume\":10},{\"time\":1791282300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.33333333333333,\"volume\":10},{\"time\":1791282600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.36666666666666,\"volume\":10},{\"time\":1791282900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.4,\"volume\":10},{\"time\":1791283200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.43333333333334,\"volume\":10},{\"time\":1791283500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.46666666666667,\"volume\":10},{\"time\":1791283800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.5,\"volume\":10},{\"time\":1791284100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.53333333333333,\"volume\":10},{\"time\":1791284400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.56666666666666,\"volume\":10},{\"time\":1791284700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.6,\"volume\":10},{\"time\":1791285000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.63333333333334,\"volume\":10},{\"time\":1791285300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.66666666666667,\"volume\":10},{\"time\":1791285600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.7,\"volume\":10},{\"time\":1791285900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.73333333333333,\"volume\":10},{\"time\":1791286200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.76666666666667,\"volume\":10},{\"time\":1791286500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.8,\"volume\":10},{\"time\":1791286800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.83333333333333,\"volume\":10},{\"time\":1791287100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.86666666666666,\"volume\":10},{\"time\":1791287400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.9,\"volume\":10},{\"time\":1791287700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.93333333333334,\"volume\":10},{\"time\":1791288000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.96666666666667,\"volume\":10}],\"indicators\":{\"sma5\":100.9,\"sma20\":100.65,\"rsi14\":100,\"lastReturn\":0.00033025099075301156},\"currentQuote\":{\"price\":100,\"timestamp\":1791288305000},\"wallet\":{\"cash\":10000,\"positions\":{},\"fees\":0,\"realizedPnl\":0,\"dailyDate\":\"2026-10-06\",\"dailyStart\":10000,\"drawdownPaused\":false,\"marketValue\":0,\"equity\":10000,\"costBasis\":0,\"pnl\":0,\"unrealizedPnl\":0,\"exposure\":0},\"recentTrades\":[],\"recentDecisions\":[],\"limits\":{\"initialCash\":10000,\"maxBuy\":500,\"maxExposure\":0.2,\"dailyDrawdown\":0.02},\"costs\":{\"feeBps\":10,\"slippageBps\":5},\"mode\":\"running\"}"
       ],
-      "reason": "Evaluate this newly completed candle exactly once.",
+      "reason": "Evaluate BTC-USD for this completed candle exactly once.",
       "amountUsd": 0,
       "source": "code"
     },
     {
-      "id": "5d937153-7bc7-468a-98d0-e8b2f0e8b6fc",
-      "proposalId": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "symbol": "BTC-USD",
+      "id": "c71fe21b-a9dd-4db9-aae9-b68ce47cd63a",
+      "proposalId": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
       "sender": "Analyst",
       "recipient": "Critic",
       "timestamp": "2026-10-06T12:05:05.000Z",
@@ -94,8 +107,9 @@
       "source": "offline-fixture"
     },
     {
-      "id": "1dd616e0-ab51-408b-ad3e-ec8b711c989f",
-      "proposalId": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "symbol": "BTC-USD",
+      "id": "66185d1f-2ea5-43ba-9e6d-ac7a9e331b58",
+      "proposalId": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
       "sender": "Critic",
       "recipient": "Controller",
       "timestamp": "2026-10-06T12:05:05.000Z",
@@ -108,8 +122,9 @@
       "source": "offline-fixture"
     },
     {
-      "id": "3ac6be17-9021-4c3f-9318-cec940676655",
-      "proposalId": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "symbol": "BTC-USD",
+      "id": "59e662b0-4afb-4595-b55d-f1b2a90e9ec7",
+      "proposalId": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
       "sender": "Controller",
       "recipient": "Risk",
       "timestamp": "2026-10-06T12:05:05.000Z",
@@ -117,41 +132,44 @@
       "evidence": [
         "OFFLINE fixture: affordable budget"
       ],
-      "reason": "Critic accepted. Fixed risk code must still approve execution.",
+      "reason": "Critic accepted. Fixed risk code still decides execution.",
       "amountUsd": 500,
       "source": "code"
     },
     {
-      "id": "6031570a-3e27-45a4-ac05-2c0de079b685",
-      "proposalId": "331bb30f-4027-4320-94d2-6392ba3fac0c",
+      "symbol": "BTC-USD",
+      "id": "347a759e-c38b-4b7f-8e03-5ea7f7693b6b",
+      "proposalId": "493c0be0-6e7b-4e70-857c-587256a8f4f4",
       "sender": "Risk",
       "recipient": "User",
       "timestamp": "2026-10-06T12:05:05.000Z",
       "decision": "EXECUTED",
       "evidence": [
-        "{\"id\":\"331bb30f-4027-4320-94d2-6392ba3fac0c\",\"symbol\":\"BTC-USD\",\"side\":\"BUY\",\"qty\":4.992508740634678,\"quotePrice\":100,\"fillPrice\":100.05,\"notional\":499.50049950049953,\"fee\":0.4995004995004706,\"timestamp\":\"2026-10-06T12:05:05.000Z\",\"quoteTimestamp\":\"2026-10-06T12:05:05.000Z\",\"marketTimestamp\":null,\"approvedAt\":\"2026-10-06T12:05:05.000Z\",\"source\":\"offline-fixture\"}"
+        "{\"id\":\"493c0be0-6e7b-4e70-857c-587256a8f4f4\",\"symbol\":\"BTC-USD\",\"side\":\"BUY\",\"qty\":4.992508740634678,\"quotePrice\":100,\"fillPrice\":100.05,\"notional\":499.50049950049953,\"fee\":0.4995004995004706,\"timestamp\":\"2026-10-06T12:05:05.000Z\",\"quoteTimestamp\":\"2026-10-06T12:05:05.000Z\",\"marketTimestamp\":null,\"approvedAt\":\"2026-10-06T12:05:05.000Z\",\"source\":\"offline-fixture\"}"
       ],
-      "reason": "Paper fill passed fixed risk checks",
+      "reason": "Paper fill passed fixed portfolio risk checks",
       "amountUsd": 500,
       "source": "code"
     },
     {
-      "id": "2df81d83-c3b9-4e0c-9ed1-302e57379140",
-      "proposalId": "373e603e-5382-4ff3-a0e3-7599b5c34186",
+      "symbol": "BTC-USD",
+      "id": "f563dc31-7d83-4efd-a2a1-33f5a4f6eccf",
+      "proposalId": "2a124a51-4d55-4c0e-86e1-99f71f3ab374",
       "sender": "Controller",
       "recipient": "Analyst",
       "timestamp": "2026-10-06T12:10:05.000Z",
       "decision": "HOLD",
       "evidence": [
-        "{\"symbol\":\"BTC-USD\",\"candleCompletedAt\":\"2026-10-06T12:10:00.000Z\",\"candles\":[{\"time\":1791279600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100,\"volume\":10},{\"time\":1791279900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.03333333333333,\"volume\":10},{\"time\":1791280200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.06666666666666,\"volume\":10},{\"time\":1791280500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.1,\"volume\":10},{\"time\":1791280800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.13333333333334,\"volume\":10},{\"time\":1791281100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.16666666666667,\"volume\":10},{\"time\":1791281400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.2,\"volume\":10},{\"time\":1791281700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.23333333333333,\"volume\":10},{\"time\":1791282000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.26666666666667,\"volume\":10},{\"time\":1791282300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.3,\"volume\":10},{\"time\":1791282600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.33333333333333,\"volume\":10},{\"time\":1791282900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.36666666666666,\"volume\":10},{\"time\":1791283200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.4,\"volume\":10},{\"time\":1791283500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.43333333333334,\"volume\":10},{\"time\":1791283800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.46666666666667,\"volume\":10},{\"time\":1791284100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.5,\"volume\":10},{\"time\":1791284400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.53333333333333,\"volume\":10},{\"time\":1791284700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.56666666666666,\"volume\":10},{\"time\":1791285000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.6,\"volume\":10},{\"time\":1791285300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.63333333333334,\"volume\":10},{\"time\":1791285600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.66666666666667,\"volume\":10},{\"time\":1791285900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.7,\"volume\":10},{\"time\":1791286200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.73333333333333,\"volume\":10},{\"time\":1791286500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.76666666666667,\"volume\":10},{\"time\":1791286800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.8,\"volume\":10},{\"time\":1791287100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.83333333333333,\"volume\":10},{\"time\":1791287400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.86666666666666,\"volume\":10},{\"time\":1791287700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.9,\"volume\":10},{\"time\":1791288000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.93333333333334,\"volume\":10},{\"time\":1791288300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.96666666666667,\"volume\":10}],\"indicators\":{\"sma5\":100.9,\"sma20\":100.65,\"rsi14\":100,\"lastReturn\":0.00033025099075301156},\"currentQuote\":{\"price\":100,\"timestamp\":1791288605000},\"wallet\":{\"cash\":9500,\"btc\":4.992508740634678,\"costBasis\":500,\"fees\":0.4995004995004706,\"realizedPnl\":0,\"dailyDate\":\"2026-10-06\",\"dailyStart\":10000,\"drawdownPaused\":false,\"marketValue\":499.2508740634678,\"equity\":9999.250874063468,\"pnl\":-0.7491259365324368,\"unrealizedPnl\":-0.7491259365322094,\"exposure\":0.049928827704328174},\"recentTrades\":[{\"id\":\"331bb30f-4027-4320-94d2-6392ba3fac0c\",\"symbol\":\"BTC-USD\",\"side\":\"BUY\",\"qty\":4.992508740634678,\"quotePrice\":100,\"fillPrice\":100.05,\"notional\":499.50049950049953,\"fee\":0.4995004995004706,\"timestamp\":\"2026-10-06T12:05:05.000Z\",\"quoteTimestamp\":\"2026-10-06T12:05:05.000Z\",\"marketTimestamp\":null,\"approvedAt\":\"2026-10-06T12:05:05.000Z\",\"source\":\"offline-fixture\"}],\"recentDecisions\":[{\"id\":\"331bb30f-4027-4320-94d2-6392ba3fac0c\",\"candle\":1791288000000,\"timestamp\":\"2026-10-06T12:05:05.000Z\",\"status\":\"EXECUTED\",\"reason\":\"Paper fill passed fixed risk checks\",\"proposal\":{\"decision\":\"BUY\",\"amountUsd\":500,\"evidence\":[\"OFFLINE fixture: rising prices\"],\"reason\":\"OFFLINE fixture proposes paper buy\"}}],\"limits\":{\"symbol\":\"BTC-USD\",\"initialCash\":10000,\"maxBuy\":500,\"maxExposure\":0.2,\"dailyDrawdown\":0.02},\"costs\":{\"feeBps\":10,\"slippageBps\":5},\"mode\":\"running\"}"
+        "{\"symbol\":\"BTC-USD\",\"candleCompletedAt\":\"2026-10-06T12:10:00.000Z\",\"candles\":[{\"time\":1791279600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100,\"volume\":10},{\"time\":1791279900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.03333333333333,\"volume\":10},{\"time\":1791280200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.06666666666666,\"volume\":10},{\"time\":1791280500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.1,\"volume\":10},{\"time\":1791280800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.13333333333334,\"volume\":10},{\"time\":1791281100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.16666666666667,\"volume\":10},{\"time\":1791281400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.2,\"volume\":10},{\"time\":1791281700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.23333333333333,\"volume\":10},{\"time\":1791282000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.26666666666667,\"volume\":10},{\"time\":1791282300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.3,\"volume\":10},{\"time\":1791282600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.33333333333333,\"volume\":10},{\"time\":1791282900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.36666666666666,\"volume\":10},{\"time\":1791283200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.4,\"volume\":10},{\"time\":1791283500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.43333333333334,\"volume\":10},{\"time\":1791283800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.46666666666667,\"volume\":10},{\"time\":1791284100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.5,\"volume\":10},{\"time\":1791284400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.53333333333333,\"volume\":10},{\"time\":1791284700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.56666666666666,\"volume\":10},{\"time\":1791285000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.6,\"volume\":10},{\"time\":1791285300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.63333333333334,\"volume\":10},{\"time\":1791285600000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.66666666666667,\"volume\":10},{\"time\":1791285900000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.7,\"volume\":10},{\"time\":1791286200000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.73333333333333,\"volume\":10},{\"time\":1791286500000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.76666666666667,\"volume\":10},{\"time\":1791286800000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.8,\"volume\":10},{\"time\":1791287100000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.83333333333333,\"volume\":10},{\"time\":1791287400000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.86666666666666,\"volume\":10},{\"time\":1791287700000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.9,\"volume\":10},{\"time\":1791288000000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.93333333333334,\"volume\":10},{\"time\":1791288300000,\"low\":99,\"high\":102,\"open\":100,\"close\":100.96666666666667,\"volume\":10}],\"indicators\":{\"sma5\":100.9,\"sma20\":100.65,\"rsi14\":100,\"lastReturn\":0.00033025099075301156},\"currentQuote\":{\"price\":100,\"timestamp\":1791288605000},\"wallet\":{\"cash\":9500,\"positions\":{\"BTC-USD\":{\"qty\":4.992508740634678,\"costBasis\":500,\"price\":100,\"marketValue\":499.2508740634678,\"unrealizedPnl\":-0.7491259365322094,\"markTimestamp\":1791288605000}},\"fees\":0.4995004995004706,\"realizedPnl\":0,\"dailyDate\":\"2026-10-06\",\"dailyStart\":10000,\"drawdownPaused\":false,\"marketValue\":499.2508740634678,\"equity\":9999.250874063468,\"costBasis\":500,\"pnl\":-0.7491259365324368,\"unrealizedPnl\":-0.7491259365322094,\"exposure\":0.049928827704328174},\"recentTrades\":[{\"id\":\"493c0be0-6e7b-4e70-857c-587256a8f4f4\",\"symbol\":\"BTC-USD\",\"side\":\"BUY\",\"qty\":4.992508740634678,\"quotePrice\":100,\"fillPrice\":100.05,\"notional\":499.50049950049953,\"fee\":0.4995004995004706,\"timestamp\":\"2026-10-06T12:05:05.000Z\",\"quoteTimestamp\":\"2026-10-06T12:05:05.000Z\",\"marketTimestamp\":null,\"approvedAt\":\"2026-10-06T12:05:05.000Z\",\"source\":\"offline-fixture\"}],\"recentDecisions\":[{\"id\":\"493c0be0-6e7b-4e70-857c-587256a8f4f4\",\"symbol\":\"BTC-USD\",\"candle\":1791288000000,\"timestamp\":\"2026-10-06T12:05:05.000Z\",\"status\":\"EXECUTED\",\"reason\":\"Paper fill passed fixed portfolio risk checks\",\"proposal\":{\"decision\":\"BUY\",\"amountUsd\":500,\"evidence\":[\"OFFLINE fixture: rising prices\"],\"reason\":\"OFFLINE fixture proposes paper buy\"}}],\"limits\":{\"initialCash\":10000,\"maxBuy\":500,\"maxExposure\":0.2,\"dailyDrawdown\":0.02},\"costs\":{\"feeBps\":10,\"slippageBps\":5},\"mode\":\"running\"}"
       ],
-      "reason": "Evaluate this newly completed candle exactly once.",
+      "reason": "Evaluate BTC-USD for this completed candle exactly once.",
       "amountUsd": 0,
       "source": "code"
     },
     {
-      "id": "12905d3a-cb74-4c84-a9c3-47982ec0ebf6",
-      "proposalId": "373e603e-5382-4ff3-a0e3-7599b5c34186",
+      "symbol": "BTC-USD",
+      "id": "83bde3ae-69cf-49c6-8e9a-75f386789db9",
+      "proposalId": "2a124a51-4d55-4c0e-86e1-99f71f3ab374",
       "sender": "Analyst",
       "recipient": "Critic",
       "timestamp": "2026-10-06T12:10:05.000Z",
@@ -164,8 +182,9 @@
       "source": "offline-fixture"
     },
     {
-      "id": "4f86cd1f-73e1-4f8d-9ba6-436e9b24b8a4",
-      "proposalId": "373e603e-5382-4ff3-a0e3-7599b5c34186",
+      "symbol": "BTC-USD",
+      "id": "d8034c0c-d319-40ed-8ead-d574f79459cd",
+      "proposalId": "2a124a51-4d55-4c0e-86e1-99f71f3ab374",
       "sender": "Critic",
       "recipient": "Controller",
       "timestamp": "2026-10-06T12:10:05.000Z",
@@ -178,8 +197,9 @@
       "source": "offline-fixture"
     },
     {
-      "id": "19fd4bb7-76d0-48e6-9abe-5f3e42f6fd6a",
-      "proposalId": "373e603e-5382-4ff3-a0e3-7599b5c34186",
+      "symbol": "BTC-USD",
+      "id": "f276288f-d312-40e2-a870-e986181fa405",
+      "proposalId": "2a124a51-4d55-4c0e-86e1-99f71f3ab374",
       "sender": "Controller",
       "recipient": "Risk",
       "timestamp": "2026-10-06T12:10:05.000Z",
@@ -187,19 +207,20 @@
       "evidence": [
         "OFFLINE fixture: critic deliberately accepts"
       ],
-      "reason": "Critic accepted. Fixed risk code must still approve execution.",
+      "reason": "Critic accepted. Fixed risk code still decides execution.",
       "amountUsd": 501,
       "source": "code"
     },
     {
-      "id": "71e5659b-ac8e-4a87-9bc9-c2c9a351bf7b",
-      "proposalId": "373e603e-5382-4ff3-a0e3-7599b5c34186",
+      "symbol": "BTC-USD",
+      "id": "7e8d5848-88d8-430a-a6dc-3b8f23e1adad",
+      "proposalId": "2a124a51-4d55-4c0e-86e1-99f71f3ab374",
       "sender": "Risk",
       "recipient": "User",
       "timestamp": "2026-10-06T12:10:05.000Z",
       "decision": "REJECT",
       "evidence": [
-        "Fixed limits cannot be overridden by agents."
+        "Combined portfolio limits cannot be overridden."
       ],
       "reason": "Buy exceeds $500 total cash limit",
       "amountUsd": 501,
