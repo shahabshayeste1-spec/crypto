@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+export const LIMITS = Object.freeze({ symbol: 'BTC-USD', initialCash: 10000, maxBuy: 500, maxExposure: 0.20, dailyDrawdown: 0.02 });
+export function loadConfig(file = 'config.json') {
+  const c = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (process.env.PAPER_PORT) c.port = Number(process.env.PAPER_PORT);
+  if (![60, 300, 900, 3600, 21600, 86400].includes(c.intervalSeconds)) throw Error('Unsupported Coinbase candle interval');
+  for (const [key, min, max] of [['pollSeconds', 5, 3600], ['staleAfterSeconds', 30, 172800], ['feeBps', 0, 1000], ['slippageBps', 0, 1000], ['agentTimeoutSeconds', 5, 600], ['port', 1024, 65535]]) {
+    if (!Number.isFinite(c[key]) || c[key] < min || c[key] > max) throw Error(`Invalid setting: ${key}`);
+  }
+  if (c.staleAfterSeconds < c.intervalSeconds) throw Error('staleAfterSeconds must be at least intervalSeconds');
+  if (c.model !== null && typeof c.model !== 'string') throw Error('Invalid model');
+  return Object.freeze(c);
+}

@@ -1,0 +1,10 @@
+{
+  "intervalSeconds": 300,
+  "pollSeconds": 30,
+  "staleAfterSeconds": 420,
+  "feeBps": 10,
+  "slippageBps": 5,
+  "agentTimeoutSeconds": 90,
+  "model": null,
+  "port": 8787
+}
