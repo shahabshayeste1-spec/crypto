@@ -25,4 +25,4 @@ for (const button of document.querySelectorAll('[data-action]')) button.onclick 
   } catch { $('notice').textContent = 'Control failed: local server unavailable.'; }
   finally { button.disabled = false; }
 };
-await refresh(); setInterval(refresh, 2000);
+void refresh(); setInterval(refresh, 2000);

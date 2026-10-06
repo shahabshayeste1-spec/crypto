@@ -2,7 +2,7 @@
 
 - Node.js 24.19.0; Codex SDK 0.160.1, pinned with a package lock.
 - Official documentation reviewed: OpenAI `openai/codex` TypeScript SDK README and official CLI configuration schema. The developers.openai.com page returned HTTP 403 here; the official GitHub source was accessible.
-- All 21 automated tests passed. The one-command launcher was exercised with an isolated test wallet; dashboard assets, the initial $10,000 balance and the Start control worked. Live polling then failed closed under the market network policy, without a trade.
+- All 22 automated tests passed. A dashboard regression test parses the JavaScript as the classic browser script used by the HTML, renders the wallet, and exercises Start/Pause/Stop with explicit offline trading fixtures. The one-command launcher was exercised with an isolated test wallet; dashboard assets, the initial $10,000 balance and the Start control worked. Live polling then failed closed under the market network policy, without a trade.
 - Automated tests exercise the actual controller, risk engine, SQLite store and HTTP server. Agent and market dependencies in those tests are explicitly offline fixtures, not real AI.
 - The offline demonstration executes a $500 buy, including fees/slippage, then rejects a $501 buy despite Critic acceptance. It does not modify the real wallet.
 - A real SDK model request was attempted, including a supported SQLite/log-directory override during diagnosis. Both failed at CLI app-server initialization because this managed environment's Codex runtime is read-only. Existing `codex login status` reported ChatGPT authentication; no missing credentials were inferred.
