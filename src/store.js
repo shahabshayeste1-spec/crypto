@@ -13,6 +13,7 @@ export class Store {
       CREATE TABLE IF NOT EXISTS cycles(symbol TEXT NOT NULL, candle INTEGER NOT NULL, id TEXT UNIQUE NOT NULL, status TEXT NOT NULL, created TEXT NOT NULL, PRIMARY KEY(symbol,candle));
       CREATE TABLE IF NOT EXISTS messages(seq INTEGER PRIMARY KEY, body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS trades(id TEXT PRIMARY KEY, body TEXT NOT NULL);
+      CREATE TABLE IF NOT EXISTS outcomes(id TEXT PRIMARY KEY,body TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS decisions(id TEXT PRIMARY KEY, body TEXT NOT NULL);`);
     // Retain a consistent SQLite backup before the first legacy schema upgrade.
     const legacySchema = !this.db.prepare('PRAGMA table_info(cycles)').all().some(c => c.name === 'symbol');
@@ -56,7 +57,7 @@ export class Store {
   decision(d) { this.db.prepare('INSERT OR REPLACE INTO decisions VALUES (?,?)').run(d.id, JSON.stringify(d)); }
   hasTrade(id) { return !!this.db.prepare('SELECT id FROM trades WHERE id=?').get(id); }
   transaction(fn) { this.db.exec('BEGIN IMMEDIATE'); try { const value = fn(); this.db.exec('COMMIT'); return value; } catch (e) { this.db.exec('ROLLBACK'); throw e; } }
-  recent(table, limit = 200) { if (!['messages', 'trades', 'decisions'].includes(table)) throw Error('Invalid table'); return this.db.prepare(`SELECT body FROM ${table} ORDER BY rowid DESC LIMIT ?`).all(limit).map(r => JSON.parse(r.body)); }
+  recent(table, limit = 200) { if (!['messages', 'trades', 'decisions', 'outcomes'].includes(table)) throw Error('Invalid table'); return this.db.prepare(`SELECT body FROM ${table} ORDER BY rowid DESC LIMIT ?`).all(limit).map(r => JSON.parse(r.body)); }
   snapshot(marks = this.get('marks')) {
     const w = this.get('wallet'), v = valuePortfolio(w, marks);
     return { ...w, ...v, pnl: v.equity === null ? null : v.equity - LIMITS.initialCash, unrealizedPnl: v.marketValue === null ? null : v.marketValue - v.costBasis, exposure: v.equity ? v.marketValue / v.equity : null };

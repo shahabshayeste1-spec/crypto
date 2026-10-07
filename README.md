@@ -48,6 +48,16 @@ Fixed limits: **$10,000** initial virtual cash, **$500 per buy including fees**,
 
 Each coin/candle has a unique durable claim and proposal ID: one proposal, one independent critique, at most one revision. Revisions are saved but deferred until a later candle can receive independent acceptance. Failed agents or any watched stale/unavailable data block new entries; exits remain possible. Execution uses a quote obtained after approval with simulated costs, never a past candle close. Quotes older than 30 seconds cannot fill. P/L uses each asset's last observed quote, with its timestamp shown. Missed or interrupted candles are never backfilled or replayed.
 
+## Active strategy and persistent learning
+
+Version 1.2 defaults to `strategyMode: "active"`, `learningEnabled: true`, and `probeBuyUsd: 100` (allowed $25–$150). The Analyst considers a small paper probe with at least one of: SMA5 above SMA20, positive last-candle return, or RSI14 between 40 and 70. It must explain a specific blocker when holding despite a candidate. The Critic evaluates modest experiments without demanding certainty; it still independently rejects weak or inconsistent proposals. No trade is forced.
+
+Feedback persists in SQLite and is sent to both agents. After three fully completed candles that **opened after** a decision, the program records a counterfactual return with estimated costs. These observations are explicitly hypothetical: they are never fills, cash or realized profits. No future candles enter an earlier decision. Nearby observations are correlated, so they do not establish a profitable edge.
+
+Actual fully closed positions supply fee-inclusive net results, including earlier partial exits. After at least ten completed positions per coin, negative recent net results tighten entry requirements to two signals and probes to $50. Positive net results with at least 60% winning positions permit probes up to $150, within your configured cap. Before enough results, the default is up to $100. Existing positions from older versions remain intact but are excluded from complete-position learning if their prior partial-exit totals are unknown. Advisory exit hypotheses are approximately 1% net profit or 0.8% adverse movement; these are model suggestions, not automatic guaranteed stops.
+
+The dashboard shows active strategy, supporting-signal count, completed-position sample count and observed outcomes below the chart. Controller message evidence contains the full feedback used by the next agents. Set `strategyMode` to `"conservative"` to require all three entry signals, or `learningEnabled` to false to disable new observations and outcome-based adaptation. Models remain free to reject a candidate. This is persistent feedback and bounded strategy adaptation, **not neural-model training or proof of improved returns**. The AI cannot change its own code, credentials, or fixed account limits.
+
 ## Tests and connections
 
 ```sh

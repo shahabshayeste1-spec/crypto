@@ -27,7 +27,7 @@ export function execute(store, proposal, quote, config, context = {}, now = Date
     if (buying && !portfolioFresh) return reject('Fresh prices for all held coins required');
     if (buying && (context.mode !== 'running' || !context.agentsHealthy || !context.dataFresh || w.drawdownPaused)) return reject('New entries paused: controls, freshness, agent failure, or daily drawdown');
     const fill = quote.price * (1 + (buying ? 1 : -1) * config.slippageBps / 10000);
-    let qty, notional, fee;
+    let qty, notional, fee, realizedPnl = null;
     if (buying) {
       if (proposal.amountUsd > LIMITS.maxBuy) return reject('Buy exceeds $500 total cash limit');
       notional = proposal.amountUsd / (1 + config.feeBps / 10000); fee = proposal.amountUsd - notional; qty = notional / fill;
@@ -35,19 +35,22 @@ export function execute(store, proposal, quote, config, context = {}, now = Date
       const currentValue = valuePortfolio(w, marks).marketValue;
       const afterValue = currentValue + qty * quote.price, cashAfter = w.cash - proposal.amountUsd;
       if (afterValue > (cashAfter + afterValue) * LIMITS.maxExposure + 1e-9) return reject('Buy exceeds 20% combined crypto exposure');
+      if (p.qty === 0) { p.realizedSinceOpen = 0; p.learningTracked = true; }
       w.cash = cashAfter; p.qty += qty; p.costBasis += proposal.amountUsd;
     } else {
       qty = context.exitAll ? p.qty : proposal.amountUsd / quote.price;
       if (qty <= 0 || qty > p.qty + 1e-12) return reject('Cannot sell more coins than owned');
       qty = Math.min(qty, p.qty); notional = qty * fill; fee = notional * config.feeBps / 10000;
       const cost = p.costBasis * qty / p.qty;
-      w.cash += notional - fee; w.realizedPnl += notional - fee - cost; p.costBasis -= cost; p.qty -= qty;
+      realizedPnl = notional - fee - cost;
+      p.realizedSinceOpen = (p.realizedSinceOpen ?? 0) + realizedPnl;
+      w.cash += notional - fee; w.realizedPnl += realizedPnl; p.costBasis -= cost; p.qty -= qty;
       if (p.qty < 1e-12) { p.qty = 0; p.costBasis = 0; }
     }
     w.positions[symbol] = p; w.fees += fee;
     const equityAfter = valuePortfolio(w, marks).equity;
     if (equityAfter !== null && w.dailyStart !== null && equityAfter <= w.dailyStart * (1 - LIMITS.dailyDrawdown)) w.drawdownPaused = true;
-    const trade = { id: proposal.id, symbol, side: proposal.decision, qty, quotePrice: quote.price, fillPrice: fill, notional, fee, timestamp: new Date(now).toISOString(), quoteTimestamp: new Date(quote.timestamp).toISOString(), marketTimestamp: quote.marketTimestamp ? new Date(quote.marketTimestamp).toISOString() : null, approvedAt: new Date(context.approvedAt).toISOString(), source: context.source ?? 'paper' };
+    const trade = { positionClosed: !buying && p.qty === 0, positionRealizedPnl: !buying && p.qty === 0 && p.learningTracked === true ? p.realizedSinceOpen : null, realizedPnl, id: proposal.id, symbol, side: proposal.decision, qty, quotePrice: quote.price, fillPrice: fill, notional, fee, timestamp: new Date(now).toISOString(), quoteTimestamp: new Date(quote.timestamp).toISOString(), marketTimestamp: quote.marketTimestamp ? new Date(quote.marketTimestamp).toISOString() : null, approvedAt: new Date(context.approvedAt).toISOString(), source: context.source ?? 'paper' };
     store.set('wallet', w); store.set('marks', marks);
     store.db.prepare('INSERT INTO trades VALUES (?,?)').run(proposal.id, JSON.stringify(trade));
     return { status: 'EXECUTED', reason: 'Paper fill passed fixed portfolio risk checks', trade };

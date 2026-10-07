@@ -31,7 +31,7 @@ if [ -f "$update_target/data/server.lock" ]; then
     exit 1
   fi
 fi
-update_backup="$update_target/backups/before-1.1-$(date +%Y%m%d-%H%M%S)-$$"
+update_backup="$update_target/backups/before-1.2-$(date +%Y%m%d-%H%M%S)-$$"
 mkdir -p "$update_backup"
 for update_item in src public scripts test docs data; do
   if [ -d "$update_target/$update_item" ]; then cp -R "$update_target/$update_item" "$update_backup/$update_item"; fi
@@ -49,6 +49,7 @@ done
 if [ ! -f "$update_target/config.json" ]; then cp -p "$update_root/config.json" "$update_target/config.json"; fi
 node - "$update_target/config.json" <<'JS'
 const fs=require('fs'),file=process.argv[2],config=JSON.parse(fs.readFileSync(file,'utf8'));
+config.strategyMode='active';config.learningEnabled=true;config.probeBuyUsd??=100;
 config.symbols=['BTC-USD','ETH-USD','SOL-USD','ZEC-USD','PUMP-USD'];
 if(config.intervalSeconds===21600){config.intervalSeconds=3600;console.log('Changed 6h interval to 1h for PUMP compatibility.');}
 fs.writeFileSync(file,JSON.stringify(config,null,2)+'\n');

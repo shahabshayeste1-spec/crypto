@@ -1,3 +1,4 @@
+import { learningContext, observeDecisions } from './learning.js';
 import { randomUUID } from 'node:crypto';
 import { message, validateResponse } from './messages.js';
 import { indicators, providerFor } from './market.js';
@@ -21,7 +22,7 @@ export class Controller {
   }
   finish(id, candle, status, reason, proposal = null, symbol = 'BTC-USD') {
     this.store.transaction(() => {
-      this.store.decision({ id, symbol, candle, timestamp: new Date(this.clock()).toISOString(), status, reason, proposal });
+      this.store.decision({ id, symbol, candle, timestamp: new Date(this.clock()).toISOString(), status, reason, proposal, observation: this.store.get(`observation:${id}`) });
       this.store.finish(candle, status, symbol);
     });
   }
@@ -75,6 +76,7 @@ export class Controller {
         const index = (startIndex + offset) % this.symbols.length, symbol = this.symbols[index];
         if (this.abort.signal.aborted || this.store.get('mode') === 'stopped') break;
         const m = markets[symbol]; if (m.status !== 'ok' || !this.fresh(m.candle)) continue;
+        observeDecisions(this.store, symbol, m.candles, this.config, this.clock());
         await this.cycle(symbol, m, marks[symbol], this.abort.signal);
         this.store.set('nextSymbolIndex', (index + 1) % this.symbols.length);
       }
@@ -88,7 +90,9 @@ export class Controller {
     if (!this.store.claim(candle.time, id, this.clock(), symbol)) return;
     let proposal;
     try {
-      const context = { symbol, candleCompletedAt: new Date(candle.time + this.config.intervalSeconds * 1000).toISOString(), candles: market.candles, indicators: market.indicators, currentQuote: mark, wallet: this.store.snapshot(), recentTrades: this.store.recent('trades', 10), recentDecisions: this.store.recent('decisions', 5), limits: LIMITS, costs: { feeBps: this.config.feeBps, slippageBps: this.config.slippageBps }, mode: this.store.get('mode') };
+      const feedback = learningContext(this.store, symbol, market.indicators, this.config);
+      this.store.set(`observation:${id}`, { price: mark.price, signals: feedback.signals, timestamp: mark.timestamp, intervalSeconds: this.config.intervalSeconds, feeBps: this.config.feeBps, slippageBps: this.config.slippageBps });
+      const context = { feedback, symbol, candleCompletedAt: new Date(candle.time + this.config.intervalSeconds * 1000).toISOString(), candles: market.candles, indicators: market.indicators, currentQuote: mark, wallet: this.store.snapshot(), recentTrades: this.store.recent('trades', 10), recentDecisions: this.store.recent('decisions', 5), limits: LIMITS, costs: { feeBps: this.config.feeBps, slippageBps: this.config.slippageBps }, mode: this.store.get('mode') };
       this.log(id, 'Controller', 'Analyst', { decision: 'HOLD', evidence: [JSON.stringify(context)], reason: `Evaluate ${symbol} for this completed candle exactly once.` }, 'code', symbol);
       proposal = await this.call('Analyst', context, id, signal);
       const critique = await this.call('Critic', { ...context, proposal }, id, signal);
@@ -160,6 +164,7 @@ export class Controller {
       wallet.positions[symbol] = { qty: 0, costBasis: 0, marketValue: 0, unrealizedPnl: 0, price: mark?.price ?? null, markTimestamp: mark?.timestamp ?? null };
     }
     for (const symbol of symbols) markets[symbol] = { ...(raw[symbol] ?? { symbol, status: 'waiting', provider: providerFor(symbol), candles: [] }), fresh: raw[symbol]?.status === 'ok' && this.fresh(raw[symbol]?.candle) };
-    return { mode: this.store.get('mode'), busy: this.busy, activity: this.store.get('activity'), markets, agents: this.store.get('agents'), wallet, messages: this.store.recent('messages'), decisions: this.store.recent('decisions'), trades: this.store.recent('trades'), config: this.config, symbols, enabledSymbols: this.symbols, limits: LIMITS, entriesPaused: this.store.get('mode') !== 'running' || !this.dataFresh() || !this.store.get('agents').healthy || this.store.get('wallet').drawdownPaused };
+    const learning = Object.fromEntries(symbols.map(symbol => [symbol, raw[symbol]?.indicators ? learningContext(this.store, symbol, raw[symbol].indicators, this.config) : null]));
+    return { learning, mode: this.store.get('mode'), busy: this.busy, activity: this.store.get('activity'), markets, agents: this.store.get('agents'), wallet, messages: this.store.recent('messages'), decisions: this.store.recent('decisions'), trades: this.store.recent('trades'), config: this.config, symbols, enabledSymbols: this.symbols, limits: LIMITS, entriesPaused: this.store.get('mode') !== 'running' || !this.dataFresh() || !this.store.get('agents').healthy || this.store.get('wallet').drawdownPaused };
   }
 }

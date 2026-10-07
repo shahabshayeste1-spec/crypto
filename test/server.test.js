@@ -30,7 +30,7 @@ test('real HTTP dashboard, protected controls, static assets and persistent wall
     assert.equal((await fetch(base+'/api/stop',{method:'POST',headers})).status,200);
     assert.equal((await fetch(base+'/api/unknown',{method:'POST',headers})).status,404);
     assert.equal((await fetch(base+'/api/stop',{method:'POST',headers:{...headers,Origin:'http://evil.example'}})).status,403);
-    assert.deepEqual(await (await fetch(base+'/api/history')).json(),{messages:[],decisions:[],trades:[]});
+    assert.deepEqual(await (await fetch(base+'/api/history')).json(),{outcomes:[],messages:[],decisions:[],trades:[]});
     const duplicate=spawn(process.execPath,['src/server.js'],{env:{...process.env,...env,PAPER_PORT:String(await freePort())},stdio:'ignore'});
     const code=await new Promise(r=>duplicate.once('exit',r));assert.equal(code,1);
     await stop(child);

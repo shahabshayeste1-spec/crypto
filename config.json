@@ -13,5 +13,8 @@
     "SOL-USD",
     "ZEC-USD",
     "PUMP-USD"
-  ]
+  ],
+  "strategyMode": "active",
+  "learningEnabled": true,
+  "probeBuyUsd": 100
 }

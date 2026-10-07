@@ -28,7 +28,7 @@ const server = http.createServer(async (req, res) => {
   if (![`127.0.0.1:${config.port}`, `localhost:${config.port}`].includes(req.headers.host)) return json(403, { error: 'Local dashboard only' });
   const url = new URL(req.url, `http://${req.headers.host}`);
   if (req.method === 'GET' && url.pathname === '/api/state') return json(200, { ...controller.status(), controlToken: token });
-  if (req.method === 'GET' && url.pathname === '/api/history') return json(200, { messages: store.recent('messages', 1000000).reverse(), decisions: store.recent('decisions', 1000000).reverse(), trades: store.recent('trades', 1000000).reverse() });
+  if (req.method === 'GET' && url.pathname === '/api/history') return json(200, { outcomes: store.recent('outcomes', 1000000).reverse(), messages: store.recent('messages', 1000000).reverse(), decisions: store.recent('decisions', 1000000).reverse(), trades: store.recent('trades', 1000000).reverse() });
   if (req.method === 'POST' && url.pathname.startsWith('/api/')) {
     if (req.headers['x-control-token'] !== token || req.headers.origin !== `http://${req.headers.host}`) return json(403, { error: 'Invalid dashboard origin or control token' });
     try {

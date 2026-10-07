@@ -28,8 +28,8 @@ function drawChart(s) {
   const price = position?.price;
   if(Number.isFinite(price)&&price>=lo&&price<=hi) svg += `<line class="price-marker" x1="${left}" y1="${y(price)}" x2="${width-right}" y2="${y(price)}"/>`;
   $('candles').innerHTML=svg;
-  const ind=m.indicators;
-  $('indicators').innerHTML=ind ? `<span>RSI 14 <b>${ind.rsi14.toFixed(1)}</b></span><span>SMA 5 <b>${money(ind.sma5)}</b></span><span>SMA 20 <b>${money(ind.sma20)}</b></span><span>Last return <b>${(ind.lastReturn*100).toFixed(2)}%</b></span>` : '';
+  const ind=m.indicators;const learning=s.learning?.[selected];
+  $('indicators').innerHTML=ind ? `${learning ? `<span>Strategy <b>${escape(learning.mode)}</b></span><span>Entry signals <b>${learning.signalScore}/${learning.entryScoreRequired} required</b></span><span>Learning <b>${learning.closedTradeCount} closed trades · ${learning.observations.length} observations</b></span>` : ''}<span>RSI 14 <b>${ind.rsi14.toFixed(1)}</b></span><span>SMA 5 <b>${money(ind.sma5)}</b></span><span>SMA 20 <b>${money(ind.sma20)}</b></span><span>Last return <b>${(ind.lastReturn*100).toFixed(2)}%</b></span>` : '';
 }
 function renderRoom(s) {
   const a=s.activity ?? {phase:'idle',detail:'Waiting'}, phase=a.phase;

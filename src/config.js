@@ -3,6 +3,10 @@ import { SUPPORTED_SYMBOLS } from './portfolio.js';
 export const LIMITS = Object.freeze({ initialCash: 10000, maxBuy: 500, maxExposure: 0.20, dailyDrawdown: 0.02 });
 export function loadConfig(file = 'config.json') {
   const c = JSON.parse(fs.readFileSync(file, 'utf8'));
+  c.strategyMode ??= 'active';
+  c.learningEnabled ??= true;
+  c.probeBuyUsd ??= 100;
+  if (!['active','conservative'].includes(c.strategyMode) || typeof c.learningEnabled !== 'boolean' || !Number.isFinite(c.probeBuyUsd) || c.probeBuyUsd < 25 || c.probeBuyUsd > 150) throw Error('Invalid strategy settings: mode active/conservative, learning boolean, probe budget $25–$150');
   c.symbols ??= [...SUPPORTED_SYMBOLS];
   if (!Array.isArray(c.symbols) || !c.symbols.length || new Set(c.symbols).size !== c.symbols.length || c.symbols.some(s => !SUPPORTED_SYMBOLS.includes(s))) throw Error('Choose unique supported symbols: ' + SUPPORTED_SYMBOLS.join(', '));
   if (c.symbols.includes('PUMP-USD') && c.intervalSeconds === 21600) throw Error('PUMP data supports 1m, 5m, 15m, 1h or 1d intervals; choose a supported interval.');
